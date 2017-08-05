@@ -1,0 +1,9 @@
+package com.luv2code.tagdemo;
+
+public class Student {
+	
+	private String firstName;
+	private String lastName;
+	private boolean goldCustomer;
+
+}

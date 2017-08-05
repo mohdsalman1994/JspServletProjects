@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="student-response.jsp">
+
+First name: <input type="text" name="firstName" />
+
+<br /><br />
+Last name: <input type="text" name="lastName" />
+
+</form>
+</body>
+</html>

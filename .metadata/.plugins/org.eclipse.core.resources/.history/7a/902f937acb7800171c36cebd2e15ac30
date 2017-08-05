@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Personalize <the> Site</the></title>
+</head>
+<body>
+
+<form action="cookie-personalize-response.html">
+
+
+Favourite Progamming Language:
+<select name="favouriteLanguage" id="">
+	<option >Java</option>
+	<option >C#</option>
+	<option >PHP</option>
+	<option >Ruby</option>
+</select>
+
+
+</form>
+
+</body>
+</html>
