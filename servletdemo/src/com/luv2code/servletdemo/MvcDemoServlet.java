@@ -1,8 +1,8 @@
 package com.luv2code.servletdemo;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class StudentServlet
+ * Servlet implementation class MvcDemoServlet
  */
-@WebServlet("/StudentServlet")
-public class StudentServlet extends HttpServlet {
+@WebServlet("/MvcDemoServlet")
+public class MvcDemoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public StudentServlet() {
+	public MvcDemoServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -28,21 +28,16 @@ public class StudentServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// Step 1: set the content type
-		response.setContentType("text/html");
 
-		// Step 2: get the printwriter
-		PrintWriter out = response.getWriter();
+		// Step 0: Add data
+		String[] students = { "Susan", "Anil", "Mohammed", "Trupti"};
+		request.setAttribute("student_list", students);
 
-		// Step 3: generate the HTML content
-		out.print("<html><body>");
+		// Step 1: get request dispatcher
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/view_students.jsp");
 
-		out.print("<h2>Student Confirmation</h2>");
-
-		out.print("The student confirmed is "+request.getParameter("firstName")+
-				" "+request.getParameter("lastName"));		
-
-		out.print("</body></html>");
+		// Step 2: forward the request to JSP
+		requestDispatcher.forward(request, response);
 	}
 
 	/**
