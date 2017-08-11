@@ -4,6 +4,7 @@
 package com.luv2code.jdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -65,6 +66,110 @@ public class StudentDbUtil {
 			// return the list of students
 			return studentsList;
 		}
+	}
+
+	/**
+	 * @param student
+	 * This method adds student to the database
+	 * @throws SQLException 
+	 */
+	public void addStudent(Student student) throws SQLException {
+		
+		try(Connection connection = dataSource.getConnection()) {
+		
+		// create sql query for insert
+		String sql = "insert into student (first_name, last_name, email) values (?, ?, ?)";  
+		
+		// set parameter values for insert
+		String firstName = student.getFirstName();
+		String lastName = student.getLastName();
+		String email = student.getEmail();
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setString(1, firstName);
+		preparedStatement.setString(2, lastName);
+		preparedStatement.setString(3, email);
+		
+		// execute the query		
+		preparedStatement.execute();
+				
+		}
+		
+	}
+
+	/**
+	 * @param studentId
+	 * @return
+	 * @throws Exception 
+	 */
+	public Student getStudent(String studentId) throws Exception {
+		
+		Student student;
+		
+		try(Connection connection = dataSource.getConnection())
+		{
+			// convert id from String to int
+			int id = Integer.parseInt(studentId);
+			
+			// create prepared statement to retrieve the student
+			String getStudentById = "select * from student where id=?";
+			PreparedStatement preparedStatement = connection.prepareStatement(getStudentById);
+			preparedStatement.setInt(1, id);
+			
+			// execute the statement
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
+			// retrieve the student from the resultSet Row
+			if(resultSet.next()) {
+				String firstName = resultSet.getString("first_Name");
+				String lastName = resultSet.getString("last_Name");
+				String email= resultSet.getString("email");
+				
+				// use the student id during student object construction
+				student = new Student(id, firstName, lastName, email);
+			}
+			else {
+				throw new Exception("Cannot find student with id:"+studentId);
+			}
+			
+			
+			
+		}
+		
+		return student;
+	}
+
+	/**
+	 * @param student
+	 * @throws SQLException 
+	 */
+	public void updateStudent(Student student) throws SQLException {
+		
+		// get a connection from the database
+		try(Connection connection = dataSource.getConnection()) {
+							
+		// create sql statement
+		String sql = "update student set first_name=?, last_Name=?, email=?"
+				+ "where id=?";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		
+		// get the student details from the Student object
+		int studentId = student.getId();
+		String firstName = student.getFirstName();
+		String lastName = student.getLastName();
+		String email = student.getEmail();
+		
+		// set the parameters of the preparedStatement
+		preparedStatement.setString(1, firstName);
+		preparedStatement.setString(2, lastName);
+		preparedStatement.setString(3, email);
+		preparedStatement.setInt(4, studentId);
+		
+		// execute the query
+		preparedStatement.execute();
+		
+		}
+		
 	}
 
 }

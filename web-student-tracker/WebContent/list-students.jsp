@@ -23,18 +23,30 @@
 
 	<div id="container">
 		<div id="content">
+		
+		<input type="button" value="Add Student"
+		onclick="window.location.href='add-student-form.jsp'; return false;"
+		class="add-student-button"/>
 			<table>
 				<tr>					
 					<th>First Name</th>
 					<th>Last Name</th>
 					<th>Email</th>
+					<th>Action</th>
 				</tr>
 
 				<c:forEach var="student" items="${students_list}">
+				
+				<!-- set up a link for each student -->
+				<c:url var="updateLink" value="StudentControllerServlet">
+				<c:param name="command" value="load"></c:param>
+				<c:param name="studentId" value="${student.id}"></c:param>
+				</c:url>
 				<tr>					
 					<td>${student.firstName}</td>
 					<td>${student.lastName}</td>
 					<td>${student.email}</td>
+					<td><a href="${updateLink}">Update</a></td>
 				</tr>
 				</c:forEach>
 			</table>
