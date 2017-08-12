@@ -1,4 +1,4 @@
- package com.luv2code.jdbc;
+package com.luv2code.jdbc;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -22,25 +22,42 @@ public class StudentControllerServlet extends HttpServlet {
 
 	StudentDbUtil studentDbUtil;
 
-	@Resource(name="jdbc/web_student_tracker")
+	@Resource(name = "jdbc/web_student_tracker")
 	DataSource dataSource;
 
-	
-
-	/* (non-Javadoc)
-	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	/*
+	 * In this method we initialize the necessary objects i.e. StudentDbUtil
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	public void init() throws ServletException {
+
+		// create our student db_util ... and pass in the connection pool/datasource
+		studentDbUtil = new StudentDbUtil(dataSource);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest,
+	 * javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		doPost(request, response);
 	}
 
-	/* 
-	 * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	/*
+	 * @see
+	 * javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest,
+	 * javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		try {
 
@@ -48,7 +65,7 @@ public class StudentControllerServlet extends HttpServlet {
 			String command = request.getParameter("command");
 
 			// if the command is missing, then default to list students
-			if(command == null) {
+			if (command == null) {
 				command = "list";
 			}
 
@@ -60,20 +77,24 @@ public class StudentControllerServlet extends HttpServlet {
 				listStudents(request, response);
 				break;
 
-			case "add":				
+			case "add":
 				addStudents(request, response);
 				break;
-				
+
 			case "load":
 				try {
-					loadStudent(request,response);
-				} catch (Exception e) {					
+					loadStudent(request, response);
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				break;
-				
+
 			case "update":
 				updateStudent(request, response);
+				break;
+
+			case "delete":
+				deleteStudent(request, response);
 				break;
 
 			default:
@@ -81,8 +102,7 @@ public class StudentControllerServlet extends HttpServlet {
 				break;
 			}
 
-
-		} catch (SQLException e) {			
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
@@ -91,60 +111,92 @@ public class StudentControllerServlet extends HttpServlet {
 	/**
 	 * @param request
 	 * @param response
-	 * @throws IOException 
-	 * @throws ServletException 
-	 * @throws SQLException 
+	 *            This method deletes the student sent by the request from
+	 *            list-students or view page of our MVC model and sends the user
+	 *            back to homepage
+	 * @throws SQLException
+	 * @throws IOException
+	 * @throws ServletException
 	 */
-	private void updateStudent(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-		
+	private void deleteStudent(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+
+		// read the student id from the request
+		String studentId = request.getParameter("studentId");
+
+		// delete the student from the database
+		studentDbUtil.deleteStudent(studentId);
+
+		// send the user back to "list students" page
+		listStudents(request, response);
+
+	}
+
+	/**
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 * @throws ServletException
+	 * @throws SQLException
+	 *             This method updates the student sent by the request from
+	 *             list-students or view page of our MVC model and sends the user
+	 *             back to homepage
+	 */
+	private void updateStudent(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+
 		// read student information from the form data
 		int studentId = Integer.parseInt(request.getParameter("studentId"));
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
 		String email = request.getParameter("email");
-		
+
 		// create student from the data
 		Student student = new Student(studentId, firstName, lastName, email);
-		
+
 		// perform update on the database
 		studentDbUtil.updateStudent(student);
-		
+
 		// send the user back to the list-students page
 		listStudents(request, response);
-		
+
 	}
 
 	/**
 	 * @param request
 	 * @param response
-	 * This method is used for updating student details
-	 * @throws Exception 
+	 *            This method is used for updating student details sent by request
+	 *            from the view page i.e. list-students
+	 * @throws Exception
 	 */
 	private void loadStudent(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	
+
 		// read the student if from the form data
 		String studentId = request.getParameter("studentId");
-		
+
 		// get student details from the database (db util)
 		Student student = studentDbUtil.getStudent(studentId);
-				
+
 		// place student in the request attribute
 		request.setAttribute("theStudent", student);
-		
-		// send to jsp page: upadate-student-form.jsp
+
+		// send to jsp page: update-student-form.jsp
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/update-student-form.jsp");
 		requestDispatcher.forward(request, response);
-		
+
 	}
 
 	/**
 	 * @param request
 	 * @param response
-	 * @throws IOException 
-	 * @throws ServletException 
-	 * @throws SQLException 
+	 * @throws IOException
+	 * @throws ServletException
+	 * @throws SQLException
+	 *             This method adds student to the database from the request sent by
+	 *             the view page i.e. list-student
 	 */
-	private void addStudents(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	private void addStudents(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
 
 		// read student info from the form data
 		String firstName = request.getParameter("firstName");
@@ -158,22 +210,23 @@ public class StudentControllerServlet extends HttpServlet {
 		studentDbUtil.addStudent(student);
 
 		// send back to main page (the student list)
-        // SEND AS REDIRECT to avoid multiple-browser reload issue
-        response.sendRedirect(request.getContextPath() + "/StudentControllerServlet?command=LIST");
+		// SEND AS REDIRECT to avoid multiple-browser reload issue
+		response.sendRedirect(request.getContextPath() + "/StudentControllerServlet?command=LIST");
 
 	}
 
 	/**
 	 * @param request
 	 * @param response
-	 * @throws SQLException 
-	 * @throws IOException 
+	 * @throws SQLException
+	 * @throws IOException
 	 * @throws ServletException
-	 * Forwards the list of students from our Model class i.e. StudentDbUtil
-	 * to view i.e. list-students.jsp
-	 *  
+	 *             Forwards the list of students from our Model class i.e.
+	 *             StudentDbUtil to view i.e. list-students.jsp
+	 * 
 	 */
-	private void listStudents(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+	private void listStudents(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
 
 		// get students from studentsDbUtil
 		List<Student> studentsList = studentDbUtil.getStudents();
@@ -185,21 +238,6 @@ public class StudentControllerServlet extends HttpServlet {
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/list-students.jsp");
 		requestDispatcher.forward(request, response);
 
-
 	}
-
-	/* 
-	 * In this method we initialize the necessary objects
-	 * i.e. StudentDbUtil
-	 */
-	@Override
-	public void init() throws ServletException {
-
-		// create our student db_util ... and pass in the connection pool/datasource
-		studentDbUtil = new StudentDbUtil(dataSource);
-
-	}
-
-
 
 }
