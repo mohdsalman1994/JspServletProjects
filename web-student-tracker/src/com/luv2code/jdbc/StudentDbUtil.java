@@ -74,7 +74,7 @@ public class StudentDbUtil {
 
 	/**
 	 * @param student
-	 * This method adds student to the database
+	 *            This method adds student to the database
 	 * @throws SQLException
 	 */
 	public void addStudent(Student student) throws SQLException {
@@ -105,8 +105,8 @@ public class StudentDbUtil {
 	 * @param studentId
 	 * @return Student
 	 * @throws Exception
-	 * This method returns a Student from the database
-	 * whose id = studentId.
+	 *             This method returns a Student from the database whose id =
+	 *             studentId.
 	 */
 	public Student getStudent(String studentId) throws Exception {
 
@@ -144,7 +144,7 @@ public class StudentDbUtil {
 	/**
 	 * @param Student
 	 * @throws SQLException
-	 * Updates the given Student object in the database
+	 *             Updates the given Student object in the database
 	 */
 	public void updateStudent(Student student) throws SQLException {
 
@@ -177,8 +177,8 @@ public class StudentDbUtil {
 	/**
 	 * @param studentId
 	 * @throws SQLException
-	 * This method deletes the Student from the database
-	 * whose id = studentId
+	 *             This method deletes the Student from the database whose id =
+	 *             studentId
 	 */
 	public void deleteStudent(String studentId) throws SQLException {
 
@@ -201,6 +201,40 @@ public class StudentDbUtil {
 			preparedStatement.execute();
 		}
 
+	}
+
+	/**
+	 * @param email
+	 * @param password
+	 * @return true or false i.e. the user details are valid or not This method
+	 *         checks if the user exists in the database or not
+	 * @throws SQLException
+	 */
+	public boolean authenticate(String email, String password) throws SQLException {
+
+		// get a connection to database
+		try (Connection connection = dataSource.getConnection()) {
+
+			// create sql to check if a record exists with a given username and password
+			String sql = "select * from appusers where email=? and password=?";
+
+			// prepare statement
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+			// set the parameters
+			preparedStatement.setString(1, email);
+			preparedStatement.setString(2, password);
+
+			// store the results in resultset
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			// check if a user record exists
+			if (resultSet.next()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
