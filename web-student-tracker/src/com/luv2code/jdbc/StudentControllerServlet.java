@@ -47,6 +47,15 @@ public class StudentControllerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		/*
+		 * // session variable HttpSession httpSession = request.getSession(false);
+		 * System.out.println(httpSession);
+		 * 
+		 * if (httpSession == null) {
+		 * System.out.println("Sorry you must login to access this page");
+		 * response.sendRedirect(request.getContextPath() +
+		 * "/login.jsp?message=INVALID"); } else { doPost(request, response); }
+		 */
 		doPost(request, response);
 	}
 
@@ -105,7 +114,6 @@ public class StudentControllerServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/**

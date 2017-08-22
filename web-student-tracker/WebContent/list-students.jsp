@@ -25,13 +25,17 @@
 </head>
 <body>
 
+	<%-- <c:if test="${request.getSession(false) == null }">
+	<% response.sendRedirect(request.getContextPath() + "/login.jsp?message=INVALID"); %>
+	</c:if> --%>
+
 	<div id="header">
 		<h2 class="text-center">Student Tracker</h2>
 	</div>
 
 	<div class="container">
 		<a class="btn btn-primary" href="add-student-form.jsp">Add Student</a>
-		<a class="btn btn-primary float-right" href="login.jsp?message=LOGOUT">
+		<a class="btn btn-primary float-right" href="LogoutServlet">
 			Logout</a>
 	</div>
 

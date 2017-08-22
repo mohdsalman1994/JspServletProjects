@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 /**
@@ -54,6 +55,7 @@ public class LoginController extends HttpServlet {
 		// get the email and password from the login page
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		System.out.println("username=" + email + " password=" + password);
 
 		// authenticate the credentials
 		boolean result = false;
@@ -68,6 +70,10 @@ public class LoginController extends HttpServlet {
 		// page
 		if (result) {
 			response.sendRedirect(request.getContextPath() + "/StudentControllerServlet?command=LIST");
+
+			HttpSession httpSession = request.getSession();
+			httpSession.setAttribute("user", email);
+
 		} else {
 			response.sendRedirect(request.getContextPath() + "/login.jsp?message=INVALID");
 		}
