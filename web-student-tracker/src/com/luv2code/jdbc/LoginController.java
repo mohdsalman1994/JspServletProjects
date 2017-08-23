@@ -13,14 +13,16 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 /**
- * Servlet implementation class LoginController
+ * This controller is used for user authentication during login
  */
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	// Our DAO reference
 	StudentDbUtil studentDbUtil;
 
+	// database resource using annotation
 	@Resource(name = "jdbc/web_student_tracker")
 	DataSource dataSource;
 
@@ -36,18 +38,10 @@ public class LoginController extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @param request
+	 * @param response
+	 *            Allows the user to access the app only if he is a valid user else
+	 *            sends him back to the login page with an error message
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -55,7 +49,6 @@ public class LoginController extends HttpServlet {
 		// get the email and password from the login page
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		System.out.println("username=" + email + " password=" + password);
 
 		// authenticate the credentials
 		boolean result = false;

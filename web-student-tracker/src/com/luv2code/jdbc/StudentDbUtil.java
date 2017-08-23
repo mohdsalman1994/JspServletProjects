@@ -14,7 +14,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 /**
- * @author Salman Shaikh
+ * @author Salman Shaikh Our DAO class
  *
  */
 public class StudentDbUtil {

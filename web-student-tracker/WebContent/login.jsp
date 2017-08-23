@@ -34,7 +34,7 @@
 			
 			<div id="authorization-message" class="alert alert-warning hidden-xl-up"
 				role="alert">
-				<strong>You need to login to access this webpage!/strong>
+				<strong>You need to login to access this webpage!</strong>
 			</div>
 			
 			<div id="logout-message" class="alert alert-success hidden-xl-up"

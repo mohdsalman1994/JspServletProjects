@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet Filter implementation class SessionFilter
+ * This Filter is used to filter appropiate urls and chain the request forward
+ * when appropiate conditions are met
  */
 @WebFilter(urlPatterns = { "/list-students.jsp", "/update-student-form.jsp", "/add-student-form.jsp",
 		"/StudentControllerServlet",
@@ -22,21 +23,22 @@ import javax.servlet.http.HttpSession;
 public class SessionFilter implements Filter {
 
 	/**
-	 * Default constructor.
+	 * 
 	 */
 	public SessionFilter() {
 		System.out.println("Session filter started");
 	}
 
 	/**
-	 * @see Filter#init(FilterConfig)
+	 * 
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
 	}
 
 	/**
-	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
+	 * @param request
+	 * @param response
+	 * @param chain
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -47,6 +49,15 @@ public class SessionFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
+		// We are setting the browser to request the mapped url's everytime
+		// the user requests for the given pages.
+		// This is needed in case after logout, if the user
+		// presses back button after logout
+		System.out.println("Trying to resolve cache issue");
+		httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+		httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+		httpServletResponse.setDateHeader("Expires", 0);
+
 		// check if user is logged in or
 		HttpSession httpSession = httpServletRequest.getSession();
 		System.out.println(httpSession);
@@ -54,9 +65,6 @@ public class SessionFilter implements Filter {
 		if ((httpSession.getAttribute("user") == null)) {
 			System.out.println("Sorry you cannot access this webpage");
 			httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login.jsp?message=NOACCESS");
-			httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-			httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-			httpServletResponse.setDateHeader("Expires", 0);
 		} else {
 
 			// pass the request along the filter chain

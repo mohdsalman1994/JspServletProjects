@@ -22,6 +22,7 @@ public class StudentControllerServlet extends HttpServlet {
 
 	StudentDbUtil studentDbUtil;
 
+	// Our database resource/connection using annotation
 	@Resource(name = "jdbc/web_student_tracker")
 	DataSource dataSource;
 
@@ -37,32 +38,18 @@ public class StudentControllerServlet extends HttpServlet {
 	}
 
 	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest,
-	 * javax.servlet.http.HttpServletResponse)
+	 * All get requests are forwarded to post to avoid code duplication
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		/*
-		 * // session variable HttpSession httpSession = request.getSession(false);
-		 * System.out.println(httpSession);
-		 * 
-		 * if (httpSession == null) {
-		 * System.out.println("Sorry you must login to access this page");
-		 * response.sendRedirect(request.getContextPath() +
-		 * "/login.jsp?message=INVALID"); } else { doPost(request, response); }
-		 */
 		doPost(request, response);
 	}
 
 	/*
-	 * @see
-	 * javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest,
-	 * javax.servlet.http.HttpServletResponse)
+	 * It handles the appropiate request and forwards to the corresponding pages or
+	 * Controller
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -82,7 +69,6 @@ public class StudentControllerServlet extends HttpServlet {
 			switch (command) {
 
 			case "list":
-				// list students in MVC fashion
 				listStudents(request, response);
 				break;
 

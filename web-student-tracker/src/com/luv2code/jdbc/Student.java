@@ -8,31 +8,31 @@ package com.luv2code.jdbc;
  *
  */
 public class Student {
-	
+
 	private int id;
 	private String firstName;
 	private String lastName;
 	private String email;
-	
+
 	/**
 	 * @param id
 	 * @param firstName
 	 * @param lastName
 	 * @param email
-	 * This constructor uses all fields
+	 *            This constructor uses all fields
 	 */
-	public Student(int id, String firstName, String lastName, String email) {		
+	public Student(int id, String firstName, String lastName, String email) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 	}
-	
+
 	/**
 	 * @param firstName
 	 * @param lastName
 	 * @param email
-	 * This constructor uses all fields except id
+	 *            This constructor uses all fields except id
 	 */
 	public Student(String firstName, String lastName, String email) {
 		super();
@@ -73,16 +73,12 @@ public class Student {
 		this.email = email;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/*
+	 * Prints out all the details of a student
 	 */
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
 	}
-	
-	
-	
-	
 
 }
