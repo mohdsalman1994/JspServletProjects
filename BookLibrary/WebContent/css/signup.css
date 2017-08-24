@@ -1,0 +1,19 @@
+@media(min-width: 768px) {
+  .field-label-responsive {
+    padding-top: .5rem;
+    text-align: right;
+  }
+}
+
+body {
+	background-color: #95DFEE;
+}
+
+#form-container {
+	background-color: white;
+}
+
+#signin {
+	position: relative;
+	top:5px;
+}
