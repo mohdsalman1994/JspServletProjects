@@ -21,54 +21,85 @@
 </head>
 
 <body>
+	<div class="container justify-content-center col-6" id="maincontainer">
 
-	<div class="container">
+		<div class="row">
 
-		<form class="form-signin" method="post" action="LoginController">
-			<h2 class="form-signin-heading text-center">Please sign in</h2>
-
-			<div id="warning-message" class="alert alert-danger hidden-xl-up"
-				role="alert">
-				<strong>Incorrect Username/Password</strong>
+			<div class="col">
+				<h2 class="form-signin-heading">Sign in</h2>
+				<hr />
 			</div>
 
-			<div id="authorization-message"
-				class="alert alert-warning hidden-xl-up" role="alert">
-				<strong>You need to login to access this webpage!</strong>
-			</div>
+		</div>
 
-			<div id="logout-message" class="alert alert-success hidden-xl-up"
-				role="alert">
-				<strong>You have logged out successfully!</strong>
-			</div>
+		<div class="row" id="login-content">
 
-			<div class="form-group">
-				<label for="inputEmail">Email address</label> <input type="email"
-					name="email" id="inputEmail" class="form-control"
-					placeholder="Email address" required autofocus>
-			</div>
+			<div class="col-md-6" id="left-div">
 
-			<div class="form-group">
-				<label for="inputPassword">Password</label> <input type="password"
-					name="password" id="inputPassword" class="form-control"
-					placeholder="Password" required>
-			</div>
-
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
-				in</button>
-
-			<div class="row">
-				<div class="col">
-					<a href="signup.jsp">Sign Up</a>
+				<div class="row">
+					<div class="col">
+						<h5>Use other Accounts</h5>
+					</div>
 				</div>
-				<div class="col text-right">
-					<a href="forgot-password.jsp">Forgot Password</a>
+
+				<div class="row">
+					<div class="col hidden-sm-down">
+						<p>You can also sign in using your Facebook or Google Account.</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col col-md-12">
+						<p>
+							<button type="button"
+								class="btn btn-primary text-white social btn-block btn-responsive" id="facebook">Login
+								with Facebook</button>
+						</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col col-md-12">
+						<p>
+							<button type="button" class="btn bg-inverse text-white social btn-block btn-responsive">Login
+								with Google</button>
+						</p>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="col-md-6">
+
+				<div class="row">
+					<div class="col text-center">
+						<h5>Use Your Account</h5>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col">
+						<form class="form-signin">
+
+							<label for="inputEmail" class="sr-only">Email address</label> <input
+								id="inputEmail" class="form-control" placeholder="Email address"
+								required="" autofocus="" type="email"> <label
+								for="inputPassword" class="sr-only">Password</label> <input
+								id="inputPassword" class="form-control" placeholder="Password"
+								required="" type="password">
+
+							<button class="btn btn-lg btn-info text-white btn-block" id="signin-button" type="submit">Sign
+								in</button>
+						</form>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col text-center"><a href="#">Forgot your password?</a></div>
 				</div>
 			</div>
 
-		</form>
-
-
+		</div>
 
 	</div>
 	<!-- /container -->
@@ -88,28 +119,6 @@
 		integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
 		crossorigin="anonymous"></script>
 
-	<c:choose>
-
-		<c:when test="${param.message == 'INVALID'}">
-			<script>
-				$('#warning-message').toggleClass('hidden-xl-up');
-			</script>
-		</c:when>
-
-		<c:when test="${param.message == 'LOGOUT'}">
-			<script>
-				$('#logout-message').toggleClass('hidden-xl-up');
-			</script>
-		</c:when>
-
-		<c:when test="${param.message == 'NOACCESS'}">
-			<script>
-				$('#authorization-message').toggleClass('hidden-xl-up');
-			</script>
-		</c:when>
-
-
-	</c:choose>
 
 </body>
 </html>

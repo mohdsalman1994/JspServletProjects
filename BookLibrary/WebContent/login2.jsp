@@ -88,7 +88,7 @@
 						placeholder="Password" required>
 				</div>
 
-				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
+				<button class="btn btn-lg btn-primaryz btn-block" type="submit">Sign
 					in</button>
 
 				<div class="row">
