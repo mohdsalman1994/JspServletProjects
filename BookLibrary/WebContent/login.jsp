@@ -23,6 +23,7 @@
 <body>
 	<div class="container justify-content-center col-6" id="maincontainer">
 
+
 		<div class="row">
 
 			<div class="col">
@@ -52,8 +53,8 @@
 					<div class="col col-md-12">
 						<p>
 							<button type="button"
-								class="btn btn-primary text-white social btn-block btn-responsive" id="facebook">Login
-								with Facebook</button>
+								class="btn btn-primary text-white social btn-block btn-responsive"
+								id="facebook">Login with Facebook</button>
 						</p>
 					</div>
 				</div>
@@ -61,7 +62,8 @@
 				<div class="row">
 					<div class="col col-md-12">
 						<p>
-							<button type="button" class="btn bg-inverse text-white social btn-block btn-responsive">Login
+							<button type="button"
+								class="btn bg-inverse text-white social btn-block btn-responsive">Login
 								with Google</button>
 						</p>
 					</div>
@@ -71,31 +73,63 @@
 
 			<div class="col-md-6">
 
+
+
 				<div class="row">
 					<div class="col text-center">
 						<h5>Use Your Account</h5>
 					</div>
 				</div>
 
+
+
+
 				<div class="row">
 					<div class="col">
-						<form class="form-signin">
+						<form class="form-signin" action="LoginController" method="post">
 
-							<label for="inputEmail" class="sr-only">Email address</label> <input
-								id="inputEmail" class="form-control" placeholder="Email address"
-								required="" autofocus="" type="email"> <label
-								for="inputPassword" class="sr-only">Password</label> <input
-								id="inputPassword" class="form-control" placeholder="Password"
-								required="" type="password">
+							<div class="row hidden-xs-up container" id="warning-message">
+								<div class="col-12 alert alert-danger" role="alert">
+									<strong>Incorrect Username/Password</strong>
+								</div>
+							</div>
+							<div class="row hidden-xs-up container"
+								id="authorization-message">
+								<div class="col alert alert-warning container" role="alert">
+									<strong>You need to login to access this webpage!</strong>
+								</div>
+							</div>
+							<div class="row hidden-xs-up container" id="logout-message">
+								<div class="col alert alert-success" role="alert">
+									<strong>You have logged out successfully!</strong>
+								</div>
+							</div>
 
-							<button class="btn btn-lg btn-info text-white btn-block" id="signin-button" type="submit">Sign
-								in</button>
+							<div class="row">
+								<div class="col">
+									<input id="inputEmail" name="email" class="form-control"
+										placeholder="Email address" required="" autofocus=""
+										type="email">
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col">
+									<input id="inputPassword" name="password" class="form-control"
+										placeholder="Password" required="" type="password">
+								</div>
+							</div>
+
+							<button class="btn btn-lg btn-info text-white btn-block"
+								id="signin-button" type="submit">Sign in</button>
 						</form>
 					</div>
 				</div>
-				
+
 				<div class="row">
-					<div class="col text-center"><a href="#">Forgot your password?</a></div>
+					<div class="col text-center">
+						<a href="#">Forgot your password?</a>
+					</div>
 				</div>
 			</div>
 
@@ -118,6 +152,29 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
 		integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
 		crossorigin="anonymous"></script>
+
+	<c:choose>
+
+		<c:when test="${param.message == 'INVALID'}">
+			<script>
+				$('#warning-message').toggleClass('hidden-xs-up');
+			</script>
+		</c:when>
+
+		<c:when test="${param.message == 'LOGOUT'}">
+			<script>
+				$('#logout-message').toggleClass('hidden-xs-up');
+			</script>
+		</c:when>
+
+		<c:when test="${param.message == 'NOACCESS'}">
+			<script>
+				$('#authorization-message').toggleClass('hidden-xs-up');
+			</script>
+		</c:when>
+
+
+	</c:choose>
 
 
 </body>
