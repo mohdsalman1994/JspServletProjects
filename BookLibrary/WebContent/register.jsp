@@ -18,36 +18,43 @@
 </head>
 <body>
 	<div class="container">
-		<form class="form-signin">
+		<form class="form-signin" id="myform" action="success">
 			<h2 class="form-signin-heading">Register</h2>
 
-			<div class="form-group has-warning">
-				<label for="fullname" class="form-control-label">Full Name</label> <input type="text"
-					class="form-control form-control-warning" id="fullname"
-					placeholder="John Doe">
-				<div class="form-control-feedback">Enter correct email address</div>
+			<div class="form-group" id="name-group">
+				<label for="fullname" class="form-control-label">Full Name</label> <input
+					type="text" class="form-control" id="fullname"
+					placeholder="John Doe" name="fullname">
+				<div class="form-control-feedback hidden-xs-up" id="name-warning"></div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group" id="email-group">
 				<label for="email">Email address</label> <input type="email"
 					class="form-control" id="email" aria-describedby="emailHelp"
-					placeholder="Enter email">
+					placeholder="Enter email" name="fullname">
+				<div class="form-control-feedback hidden-xs-up" id="email-warning"></div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group" id="mobile-group">
 				<label for="mobile">Mobile</label> <input type="tel"
-					class="form-control" id="demo" placeholder="8963757247">
+					class="form-control" id="mobile" placeholder="8963757247"
+					name="mobile">
+				<div class="form-control-feedback hidden-xs-up" id="mobile-warning"></div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group" id="password-group">
 				<label for="password">Password</label> <input type="password"
-					class="form-control" id="password" placeholder="Password">
+					class="form-control" id="password" placeholder="Password"
+					name="password">
+				<div class="form-control-feedback hidden-xs-up"
+					id="password-warning"></div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group" id="confirmPassword-group">
 				<label for="confirmPassword">Confirm Password</label> <input
 					type="password" class="form-control" id="confirmPassword"
-					placeholder="Retype the Password">
+					placeholder="Retype the Password" name="confirmPassword">
+				<div class="form-control-feedback hidden-xs-up" id="confirmPassword-warning"></div>
 			</div>
 
 			<div class="form-group">
@@ -88,7 +95,7 @@
 				<p id="signin" class="text-center">
 					Already have an Account?<a href="#">Sign In</a>.
 				</p>
-			</div>
+			</div>		
 		</form>
 
 	</div>
@@ -106,9 +113,11 @@
 		integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
 		crossorigin="anonymous"></script>
 
-	<script>
-		
-	</script>
+	<script type="text/javascript"
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.14.0/jquery.validate.js"></script>
 
+	<!-- Client side validation using jquery -->
+	<script src="js/register.js"></script>
+	
 </body>
 </html>
