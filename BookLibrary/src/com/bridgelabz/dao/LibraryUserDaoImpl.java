@@ -1,17 +1,24 @@
 /**
  * 
  */
-package com.bridgelabz.jdbc;
+package com.bridgelabz.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
-import com.bridgelabz.dao.LibraryUserDAO;
-
+/**
+ * @author Salman Shaikh
+ *
+ */
+/**
+ * @author Salman Shaikh
+ *
+ */
 /**
  * @author Salman Shaikh
  *
@@ -62,6 +69,72 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 		}
 
 		return false;
+	}
+
+	public String register(String fullName, String email, String mobile, String password, String confirmPassword,
+			String gender) {
+		String error = "";
+		Pattern pattern = null;
+		String digits = "\\d";
+		String fullnameRegex = "[a-zA-Z]+ [a-zA-Z]+( [a-zA-Z])*";
+		String emailRegex = "([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$";
+		String mobileRegex = "[0-9]{10}";
+
+		// first check for null data or empty data and error messages accordingly
+		if (isNullOrBlank(fullName)) {
+			error += "<p>Fullname required!</p>";
+
+		} else {
+
+			// check if fullname contains any numbers
+
+			// check if fullname contains only two words
+
+		}
+
+		if (isNullOrBlank(email)) {
+			error += "<p>Email required!</p>";
+		} else {
+
+		}
+
+		if (isNullOrBlank(mobile)) {
+			error += "<p>Mobile no required!</p>";
+		} else {
+
+		}
+
+		if (isNullOrBlank(password)) {
+			error += "<p>Password required!</p>";
+		} else {
+
+		}
+
+		if (isNullOrBlank(confirmPassword)) {
+			error += "<p>Confirm Password required!</p>";
+		} else {
+
+		}
+
+		if (isNullOrBlank(gender)) {
+			error += "<p>Gender required!</p>";
+		} else {
+
+		}
+
+		return error;
+	}
+
+	/**
+	 * @return whether the given username is already present or not
+	 */
+	public boolean checkUsername() {
+		return false;
+	}
+
+	public boolean isNullOrBlank(String s) {
+
+		return (s == null || s.trim().equals(""));
 	}
 
 }

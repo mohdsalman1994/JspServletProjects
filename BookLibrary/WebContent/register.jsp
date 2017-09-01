@@ -18,7 +18,7 @@
 </head>
 <body>
 	<div class="container">
-		<form class="form-signin" id="myform" action="success">
+		<form class="form-signin" id="myform" action="RegisterController" method="post">
 			<h2 class="form-signin-heading">Register</h2>
 
 			<div class="form-group" id="name-group">
@@ -31,7 +31,7 @@
 			<div class="form-group" id="email-group">
 				<label for="email">Email address</label> <input type="email"
 					class="form-control" id="email" aria-describedby="emailHelp"
-					placeholder="Enter email" name="fullname">
+					placeholder="Enter email" name="email">
 				<div class="form-control-feedback hidden-xs-up" id="email-warning"></div>
 			</div>
 

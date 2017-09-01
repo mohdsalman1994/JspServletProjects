@@ -16,7 +16,7 @@
 	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
 	crossorigin="anonymous">
 
-<link rel="stylesheet" href="css/signin.css" />
+<link rel="stylesheet" href="css/login.css" />
 
 </head>
 
@@ -126,9 +126,13 @@
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="col text-center">
+				<div class="row" id="bottom-links" style="margin: 2% auto;">
+					<div class="col text-center col-md-auto">
 						<a href="#">Forgot your password?</a>
+					</div>
+
+					<div class="col text-center">
+						<a href="register.jsp">Register</a>
 					</div>
 				</div>
 			</div>

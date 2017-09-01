@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import com.bridgelabz.dao.LibraryUserDaoImpl;
+
 /**
  * This controller is used for user authentication during login
  */
@@ -27,7 +29,8 @@ public class LoginController extends HttpServlet {
 	DataSource dataSource;
 
 	/*
-	 * In this method we initialize the necessary objects i.e. UserDbUtil
+	 * We initialize the necessary objects i.e. UserDbUtil when the servlet is
+	 * initialized by the container
 	 */
 	@Override
 	public void init() throws ServletException {
