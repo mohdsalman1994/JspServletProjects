@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,85 +20,106 @@
 </head>
 <body>
 	<div class="container">
-		<form class="form-signin" id="myform" action="RegisterController" method="post">
-			<h2 class="form-signin-heading">Register</h2>
 
-			<div class="form-group" id="name-group">
-				<label for="fullname" class="form-control-label">Full Name</label> <input
-					type="text" class="form-control" id="fullname"
-					placeholder="John Doe" name="fullname">
-				<div class="form-control-feedback hidden-xs-up" id="name-warning"></div>
-			</div>
+		<c:if test="${param.msg == 'ERROR'}">
+			<div class="row justify-content-center">
+				<div class="col-4 text-center alert alert-danger" role="alert">
+				
+				${sessionScope.error}
+				
+				<% session.invalidate(); %>
 
-			<div class="form-group" id="email-group">
-				<label for="email">Email address</label> <input type="email"
-					class="form-control" id="email" aria-describedby="emailHelp"
-					placeholder="Enter email" name="email">
-				<div class="form-control-feedback hidden-xs-up" id="email-warning"></div>
-			</div>
-
-			<div class="form-group" id="mobile-group">
-				<label for="mobile">Mobile</label> <input type="tel"
-					class="form-control" id="mobile" placeholder="8963757247"
-					name="mobile">
-				<div class="form-control-feedback hidden-xs-up" id="mobile-warning"></div>
-			</div>
-
-			<div class="form-group" id="password-group">
-				<label for="password">Password</label> <input type="password"
-					class="form-control" id="password" placeholder="Password"
-					name="password">
-				<div class="form-control-feedback hidden-xs-up"
-					id="password-warning"></div>
-			</div>
-
-			<div class="form-group" id="confirmPassword-group">
-				<label for="confirmPassword">Confirm Password</label> <input
-					type="password" class="form-control" id="confirmPassword"
-					placeholder="Retype the Password" name="confirmPassword">
-				<div class="form-control-feedback hidden-xs-up" id="confirmPassword-warning"></div>
-			</div>
-
-			<div class="form-group">
-				<div class="row">
-					<div class="col">
-						<label for="gender">Gender</label>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="form-check form-check-inline col">
-						<label class="form-check-label"> <input
-							class="form-check-input" type="radio" name="gender" id="male"
-							value="male" required> Male
-						</label>
-					</div>
-					<div class="form-check form-check-inline col">
-						<label class="form-check-label"> <input
-							class="form-check-input" type="radio" name="gender" id="female"
-							value="female" required> Female
-						</label>
-					</div>
 				</div>
 			</div>
+		</c:if>
 
-			<div class="form-group">
-				<p id="agreement">
-					By Clicking on the "Create Account" Button below, you certify that
-					you have read and agree to our <a href="#">terms of use</a> and <a
-						href="">privacy policy</a>.
-				</p>
+
+		<div class="row">
+			<div class="col">
+				<form class="form-signin" id="myform" action="RegisterController"
+					method="post">
+					<h2 class="form-signin-heading">Register</h2>
+
+					<div class="form-group" id="name-group">
+						<label for="fullname" class="form-control-label">Full Name</label>
+						<input type="text" class="form-control" id="fullname"
+							placeholder="John Doe" name="fullname">
+						<div class="form-control-feedback hidden-xs-up" id="name-warning"></div>
+					</div>
+
+					<div class="form-group" id="email-group">
+						<label for="email">Email address</label> <input type="email"
+							class="form-control" id="email" aria-describedby="emailHelp"
+							placeholder="Enter email" name="email">
+						<div class="form-control-feedback hidden-xs-up" id="email-warning"></div>
+					</div>
+
+					<div class="form-group" id="mobile-group">
+						<label for="mobile">Mobile</label> <input type="tel"
+							class="form-control" id="mobile" placeholder="8963757247"
+							name="mobile">
+						<div class="form-control-feedback hidden-xs-up"
+							id="mobile-warning"></div>
+					</div>
+
+					<div class="form-group" id="password-group">
+						<label for="password">Password</label> <input type="password"
+							class="form-control" id="password" placeholder="Password"
+							name="password">
+						<div class="form-control-feedback hidden-xs-up"
+							id="password-warning"></div>
+					</div>
+
+					<div class="form-group" id="confirmPassword-group">
+						<label for="confirmPassword">Confirm Password</label> <input
+							type="password" class="form-control" id="confirmPassword"
+							placeholder="Retype the Password" name="confirmPassword">
+						<div class="form-control-feedback hidden-xs-up"
+							id="confirmPassword-warning"></div>
+					</div>
+
+					<div class="form-group">
+						<div class="row">
+							<div class="col">
+								<label for="gender">Gender</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-check form-check-inline col">
+								<label class="form-check-label"> <input
+									class="form-check-input" type="radio" name="gender" id="male"
+									value="male" required> Male
+								</label>
+							</div>
+							<div class="form-check form-check-inline col">
+								<label class="form-check-label"> <input
+									class="form-check-input" type="radio" name="gender" id="female"
+									value="female" required> Female
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<p id="agreement">
+							By Clicking on the "Create Account" Button below, you certify
+							that you have read and agree to our <a href="#">terms of use</a>
+							and <a href="">privacy policy</a>.
+						</p>
+					</div>
+
+					<button type="submit" class="btn btn-success btn-block">Create
+						an Account</button>
+
+					<div class="form-group">
+						<p id="signin" class="text-center">
+							Already have an Account?<a href="#">Sign In</a>.
+						</p>
+					</div>
+				</form>
 			</div>
-
-			<button type="submit" class="btn btn-success btn-block">Create
-				an Account</button>
-
-			<div class="form-group">
-				<p id="signin" class="text-center">
-					Already have an Account?<a href="#">Sign In</a>.
-				</p>
-			</div>		
-		</form>
+		</div>
 
 	</div>
 
@@ -118,6 +141,6 @@
 
 	<!-- Client side validation using jquery -->
 	<script src="js/register.js"></script>
-	
+
 </body>
 </html>

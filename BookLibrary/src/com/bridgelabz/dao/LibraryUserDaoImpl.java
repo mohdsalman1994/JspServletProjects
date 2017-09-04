@@ -7,18 +7,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
-/**
- * @author Salman Shaikh
- *
- */
-/**
- * @author Salman Shaikh
- *
- */
+import com.bridgelabz.utilities.MyUtilitiy;
+
 /**
  * @author Salman Shaikh
  *
@@ -44,6 +40,7 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 	 *         checks if the user exists in the database or not
 	 * @throws SQLException
 	 */
+	@Override
 	public boolean authenticate(String email, String password) throws SQLException {
 
 		// get a connection to database
@@ -71,52 +68,108 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 		return false;
 	}
 
+	/*
+	 * @param fullName
+	 * 
+	 * @param email
+	 * 
+	 * @param mobile
+	 * 
+	 * @param password
+	 * 
+	 * @param confirmPassword
+	 * 
+	 * @param gender
+	 * 
+	 * @return an error String This method tries to register a user with the given
+	 * details and returns an error String if any errors encountered
+	 * 
+	 */
+	@Override
 	public String register(String fullName, String email, String mobile, String password, String confirmPassword,
-			String gender) {
+			String gender) throws SQLException {
 		String error = "";
-		Pattern pattern = null;
-		String digits = "\\d";
-		String fullnameRegex = "[a-zA-Z]+ [a-zA-Z]+( [a-zA-Z])*";
-		String emailRegex = "([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$";
-		String mobileRegex = "[0-9]{10}";
 
 		// first check for null data or empty data and error messages accordingly
-		if (isNullOrBlank(fullName)) {
+		if (MyUtilitiy.isNullOrBlank(fullName)) {
 			error += "<p>Fullname required!</p>";
 
 		} else {
 
-			// check if fullname contains any numbers
+			fullName = fullName.trim();
+			String digits = "\\d";
+			String fullnameRegex = "[a-zA-Z]+ [a-zA-Z]+( [a-zA-Z])*";
 
-			// check if fullname contains only two words
+			Pattern digitPattern = Pattern.compile(digits);
+			Pattern wordPattern = Pattern.compile(fullnameRegex);
 
+			Matcher digitMatcher = digitPattern.matcher(fullName);
+			Matcher wordMatcher = wordPattern.matcher(fullName);
+
+			// check if fullname contains any numbers or less than two words
+			if (digitMatcher.find()) {
+				error += "<p>No numbers allowed in fullname<p>";
+
+			} else if (!(wordMatcher.matches())) {
+				error += "<p>Minimum two words in fullname required";
+			}
 		}
 
-		if (isNullOrBlank(email)) {
+		if (MyUtilitiy.isNullOrBlank(email)) {
 			error += "<p>Email required!</p>";
 		} else {
 
+			email = email.trim();
+			String emailRegex = "([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{2,4})+$";
+
+			// check if the email address is in correct format
+			Pattern emailPattern = Pattern.compile(emailRegex);
+
+			Matcher emailMatcher = emailPattern.matcher(email);
+
+			if (!(emailMatcher.matches())) {
+				error += "<p>Incorrect email address</p>";
+			} else if (checkUserExists(email)) {
+				error += "<p>Email already registered</p>";
+			}
+
 		}
 
-		if (isNullOrBlank(mobile)) {
+		if (MyUtilitiy.isNullOrBlank(mobile)) {
 			error += "<p>Mobile no required!</p>";
 		} else {
+			mobile = mobile.trim();
+			String mobileRegex = "[0-9]{10}";
+			String wordRegex = "[a-zA-Z]";
+
+			Pattern mobilePattern = Pattern.compile(mobileRegex);
+			Pattern mobileWordPattern = Pattern.compile(wordRegex);
+
+			Matcher mobileMatcher = mobilePattern.matcher(mobile);
+			Matcher wordMatcher = mobileWordPattern.matcher(mobile);
+
+			// check if mobile no doesn't contain any alphabets and contains only 10 digits
+			if (wordMatcher.find()) {
+				error += "<p>Only numbers allowed in mobile no</p>";
+			} else if (!(mobileMatcher.find())) {
+				error += "<p>Only 10 digits allowed in mobile no</p>";
+			}
 
 		}
 
-		if (isNullOrBlank(password)) {
+		if (MyUtilitiy.isNullOrBlank(password)) {
 			error += "<p>Password required!</p>";
-		} else {
-
 		}
 
-		if (isNullOrBlank(confirmPassword)) {
+		if (MyUtilitiy.isNullOrBlank(confirmPassword)) {
 			error += "<p>Confirm Password required!</p>";
 		} else {
-
+			if (Objects.equals(password, confirmPassword) == false) {
+				error += "<p>Passwords do not match!</p>";
+			}
 		}
 
-		if (isNullOrBlank(gender)) {
+		if (MyUtilitiy.isNullOrBlank(gender)) {
 			error += "<p>Gender required!</p>";
 		} else {
 
@@ -127,14 +180,90 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 
 	/**
 	 * @return whether the given username is already present or not
+	 * @throws SQLException
 	 */
-	public boolean checkUsername() {
+	@Override
+	public boolean checkUserExists(String email) throws SQLException {
+
+		// get a connection to database
+		try (Connection connection = dataSource.getConnection()) {
+
+			// create sql to check if a record exists with a given username
+			String sql = "select * from appusers where email=?";
+
+			// prepare statement
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+			// set the parameters
+			preparedStatement.setString(1, email);
+
+			// store the results in resultset
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			// check if a user record exists
+			if (resultSet.next()) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 
-	public boolean isNullOrBlank(String s) {
+	/*
+	 * 
+	 * @see com.bridgelabz.dao.LibraryUserDAO#addUser(java.lang.String,
+	 * java.lang.String, java.lang.String, java.lang.String, java.lang.String,
+	 * java.lang.String)
+	 */
+	@Override
+	public void addUser(String fullName, String email, String mobile, String password, String gender)
+			throws SQLException {
+		try (Connection connection = dataSource.getConnection()) {
 
-		return (s == null || s.trim().equals(""));
+			String sql = "insert into appusers(email, password) values (?,?)";
+			Integer uid = null;
+
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setString(1, email);
+			preparedStatement.setString(2, password);
+
+			preparedStatement.executeUpdate();
+			preparedStatement.close();
+
+			// create sql to get user id
+			sql = "select uid from appusers where email=?";
+
+			// prepare statement
+			preparedStatement = connection.prepareStatement(sql);
+
+			// set the parameters
+			preparedStatement.setString(1, email);
+
+			// store the results in resultset
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			//
+			while (resultSet.next()) {
+				uid = resultSet.getInt("uid");
+			}
+
+			if (uid != null) {
+				sql = "insert into userdetails(uid, fullname, email, phone, gender) values (?, ?, ?, ?, ?)";
+				preparedStatement = connection.prepareStatement(sql);
+
+				preparedStatement.setInt(1, uid);
+				preparedStatement.setString(2, fullName);
+				preparedStatement.setString(3, email);
+				preparedStatement.setString(4, mobile);
+				preparedStatement.setString(5, gender);
+
+				preparedStatement.executeUpdate();
+			} else {
+				System.out.println("User does not exist");
+			}
+
+		}
+
 	}
-
 }
