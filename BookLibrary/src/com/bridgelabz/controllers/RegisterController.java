@@ -1,4 +1,4 @@
-package com.bridgelabz.jdbc;
+package com.bridgelabz.controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,9 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
-
 import com.bridgelabz.dao.LibraryUserDaoImpl;
+import com.bridgelabz.entity.LibraryUser;
 import com.bridgelabz.utilities.MyUtilitiy;
 
 /**
@@ -23,7 +22,6 @@ import com.bridgelabz.utilities.MyUtilitiy;
 @WebServlet("/RegisterController")
 public class RegisterController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = Logger.getLogger(RegisterController.class);
 
 	// Our DAO reference
 	LibraryUserDaoImpl libraryUserDbUtil;
@@ -50,8 +48,6 @@ public class RegisterController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		logger.debug("Entered doPost of RegisterController");
 
 		// get all the fields from the registration page
 		String fullName = request.getParameter("fullname");
@@ -82,8 +78,15 @@ public class RegisterController extends HttpServlet {
 			// add the user to the database
 			try {
 				libraryUserDbUtil.addUser(fullName, email, mobile, password, gender);
+
+				// get user by email id and set the user for session
+				LibraryUser user = libraryUserDbUtil.getUserByEmail(email);
+				HttpSession httpSession = request.getSession(true);
+				httpSession.setAttribute("user", user);
+
+				response.sendRedirect(request.getContextPath() + "/homepage.jsp?user=NEW");
+
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

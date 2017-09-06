@@ -5,6 +5,8 @@ package com.bridgelabz.dao;
 
 import java.sql.SQLException;
 
+import com.bridgelabz.entity.LibraryUser;
+
 /**
  * @author Salman Shaikh This is our DAO interface for Library Users
  *
@@ -52,5 +54,7 @@ public interface LibraryUserDAO {
 	 */
 	public void addUser(String fullName, String email, String mobile, String password, String gender)
 			throws SQLException;
+
+	public LibraryUser getUserByEmail(String email) throws SQLException;
 
 }

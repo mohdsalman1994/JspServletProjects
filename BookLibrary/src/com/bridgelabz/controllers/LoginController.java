@@ -1,4 +1,4 @@
-package com.bridgelabz.jdbc;
+package com.bridgelabz.controllers;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import com.bridgelabz.dao.LibraryUserDaoImpl;
+import com.bridgelabz.entity.LibraryUser;
 
 /**
  * This controller is used for user authentication during login
@@ -62,13 +63,20 @@ public class LoginController extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		// if correct credentials then forward to StudentController else back to login
+		// if correct credentials then forward to LibraryController else back to login
 		// page
 		if (result) {
-			response.sendRedirect(request.getContextPath() + "/LibraryControllerServlet?command=LIST");
 
-			HttpSession httpSession = request.getSession();
-			httpSession.setAttribute("user", email);
+			// get user by email id and set the user for session
+			try {
+				LibraryUser user = userDbUtil.getUserByEmail(email);
+				HttpSession httpSession = request.getSession(true);
+				httpSession.setAttribute("user", user);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			response.sendRedirect(request.getContextPath() + "/homepage.jsp");
 
 		} else {
 			response.sendRedirect(request.getContextPath() + "/login.jsp?message=INVALID");

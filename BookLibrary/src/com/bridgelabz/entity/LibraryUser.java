@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bridgelabz.jdbc;
+package com.bridgelabz.entity;
 
 /**
  * @author Salman Shaikh This class represents our library users
@@ -12,7 +12,7 @@ public class LibraryUser {
 	private Integer userId;
 	private String fullName;
 	private String email;
-	private Double mobile;
+	private String mobile;
 	private String gender;
 
 	/**
@@ -23,7 +23,7 @@ public class LibraryUser {
 	 * @param gender
 	 *            This constructor uses all fields
 	 */
-	public LibraryUser(Integer userId, String fullName, String email, Double mobile, String gender) {
+	public LibraryUser(Integer userId, String fullName, String email, String mobile, String gender) {
 		this.userId = userId;
 		this.fullName = fullName;
 		this.email = email;
@@ -38,7 +38,7 @@ public class LibraryUser {
 	 * @param gender
 	 *            This constructor uses all fields except id
 	 */
-	public LibraryUser(String fullName, String email, Double mobile, String gender) {
+	public LibraryUser(String fullName, String email, String mobile, String gender) {
 		this.fullName = fullName;
 		this.email = email;
 		this.mobile = mobile;
@@ -93,7 +93,7 @@ public class LibraryUser {
 	/**
 	 * @return the mobile
 	 */
-	public Double getMobile() {
+	public String getMobile() {
 		return mobile;
 	}
 
@@ -101,7 +101,7 @@ public class LibraryUser {
 	 * @param mobile
 	 *            the mobile to set
 	 */
-	public void setMobile(Double mobile) {
+	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
 

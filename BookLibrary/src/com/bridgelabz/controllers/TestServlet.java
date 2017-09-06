@@ -1,4 +1,4 @@
-package com.bridgelabz.jdbc;
+package com.bridgelabz.controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;

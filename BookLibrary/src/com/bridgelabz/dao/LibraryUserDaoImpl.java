@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
+import com.bridgelabz.entity.LibraryUser;
 import com.bridgelabz.utilities.MyUtilitiy;
 
 /**
@@ -264,6 +265,41 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 			}
 
 		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.bridgelabz.dao.LibraryUserDAO#getUserByEmail(java.lang.String)
+	 */
+	@Override
+	public LibraryUser getUserByEmail(String email) throws SQLException {
+
+		LibraryUser libraryUser = null;
+
+		try (Connection connection = dataSource.getConnection()) {
+			// Sql query
+			String sql = "select * from userdetails where email=?";
+
+			// Prepared Statement
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, email);
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			// get the user with the given email
+			if (resultSet.next()) {
+				Integer userId = resultSet.getInt("uid");
+				String fullName = resultSet.getString("fullname");
+				String mobile = resultSet.getString("phone");
+				String gender = resultSet.getString("gender");
+				libraryUser = new LibraryUser(userId, fullName, email, mobile, gender);
+			}
+
+		}
+
+		return libraryUser;
 
 	}
 }
