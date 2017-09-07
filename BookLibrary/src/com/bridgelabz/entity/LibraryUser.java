@@ -15,6 +15,9 @@ public class LibraryUser {
 	private String mobile;
 	private String gender;
 
+	public LibraryUser() {
+	}
+
 	/**
 	 * @param userId
 	 * @param fullName
