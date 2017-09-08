@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.bridgelabz.dao;
 
 import java.sql.Connection;

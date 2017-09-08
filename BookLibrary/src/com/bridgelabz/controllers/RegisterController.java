@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -84,7 +85,8 @@ public class RegisterController extends HttpServlet {
 				HttpSession httpSession = request.getSession(true);
 				httpSession.setAttribute("user", user);
 
-				response.sendRedirect(request.getContextPath() + "/homepage.jsp?user=NEW");
+				RequestDispatcher requestDispatcher = request.getRequestDispatcher("LibraryController?command=WELCOME");
+				requestDispatcher.forward(request, response);
 
 			} catch (SQLException e) {
 				e.printStackTrace();

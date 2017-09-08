@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -76,7 +77,8 @@ public class LoginController extends HttpServlet {
 				e.printStackTrace();
 			}
 
-			response.sendRedirect(request.getContextPath() + "/homepage.jsp");
+			RequestDispatcher requestDispatcher = request.getRequestDispatcher("LibraryController?command=WELCOME");
+			requestDispatcher.forward(request, response);
 
 		} else {
 			response.sendRedirect(request.getContextPath() + "/login.jsp?message=INVALID");
