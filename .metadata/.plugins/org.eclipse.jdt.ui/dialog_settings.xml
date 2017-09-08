@@ -120,8 +120,8 @@
 		<item value="2" key="pageIndex"/>
 	</section>
 	<section name="completion_proposal_size">
-		<item value="206" key="contextSelector.size.y"/>
-		<item value="296" key="contextSelector.size.x"/>
+		<item value="194" key="contextSelector.size.y"/>
+		<item value="284" key="contextSelector.size.x"/>
 	</section>
 	<section name="AddGetterSetterDialog">
 		<item value="false" key="SortOrdering"/>

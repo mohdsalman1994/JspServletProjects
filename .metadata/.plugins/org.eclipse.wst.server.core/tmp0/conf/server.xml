@@ -124,7 +124,11 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="/home/bridgeit/SALMAN/GitRepos/EclipseWorkspace/JspServlets/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/ROOT" path="" reloadable="false"/><Context docBase="/home/bridgeit/SALMAN/GitRepos/EclipseWorkspace/JspServlets/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/web-student-tracker" path="/web-student-tracker" reloadable="true" source="org.eclipse.jst.jee.server:web-student-tracker"/><Context docBase="/home/bridgeit/SALMAN/GitRepos/EclipseWorkspace/JspServlets/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/BookLibrary" path="/BookLibrary" reloadable="true" source="org.eclipse.jst.jee.server:BookLibrary">
+      <Context docBase="/home/bridgeit/SALMAN/GitRepos/EclipseWorkspace/JspServlets/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/ROOT" path="" reloadable="false"/><Context docBase="/home/bridgeit/SALMAN/GitRepos/EclipseWorkspace/JspServlets/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/web-student-tracker" path="/web-student-tracker" reloadable="true" source="org.eclipse.jst.jee.server:web-student-tracker">
+
+  <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="20" maxIdle="5" maxWait="10000" name="jdbc/web_student_tracker" password="webstudent" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/web_student_tracker?useSSL=false" username="webstudent"/>
+
+</Context><Context docBase="/home/bridgeit/SALMAN/GitRepos/EclipseWorkspace/JspServlets/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/BookLibrary" path="/BookLibrary" reloadable="true" source="org.eclipse.jst.jee.server:BookLibrary">
 
   <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxActive="20" maxIdle="5" maxWait="10000" name="jdbc/book_library" password="libraryadmin" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/book_library?useSSL=false" username="libraryadmin"/>
 
