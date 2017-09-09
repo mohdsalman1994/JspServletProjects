@@ -66,8 +66,11 @@ public class LibraryController extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 
+			System.out.println("Inside Library Controller");
+
 			// read the command parameter
 			String command = request.getParameter("command");
+			System.out.println("Command is " + command);
 
 			// if the command is missing, then default to list students
 			if (command == null) {
@@ -158,6 +161,7 @@ public class LibraryController extends HttpServlet {
 	 */
 	private void listBooks(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 
+		System.out.println("Inside listBooks");
 		Gson gson = null;
 		String category = request.getParameter("category").toLowerCase();
 		HttpSession httpSession = request.getSession();
@@ -168,12 +172,15 @@ public class LibraryController extends HttpServlet {
 			LibraryUser user = (LibraryUser) httpSession.getAttribute("user");
 			userId = user.getUserId();
 			List<Book> bookList = libraryBookUtil.getBooks(userId, category);
-			gson = new GsonBuilder().disableHtmlEscaping().create();
-			JsonElement element = gson.toJsonTree(bookList, new TypeToken<List<Book>>() {
-			}.getType());
-			JsonArray jsonArray = element.getAsJsonArray();
-			response.setContentType("application/json");
-			response.getWriter().print(jsonArray);
+			if (bookList != null) {
+				gson = new GsonBuilder().disableHtmlEscaping().create();
+				JsonElement element = gson.toJsonTree(bookList, new TypeToken<List<Book>>() {
+				}.getType());
+				JsonArray jsonArray = element.getAsJsonArray();
+				System.out.println("JsonArray: " + jsonArray);
+				response.setContentType("application/json");
+				response.getWriter().print(jsonArray);
+			}
 		}
 
 	}

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.annotation.Resource;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,6 +41,17 @@ public class LoginController extends HttpServlet {
 
 	}
 
+	/*
+	 * @param request
+	 * 
+	 * @param response Forward all requests to do post
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doPost(request, response);
+	}
+
 	/**
 	 * @param request
 	 * @param response
@@ -77,8 +87,10 @@ public class LoginController extends HttpServlet {
 				e.printStackTrace();
 			}
 
-			RequestDispatcher requestDispatcher = request.getRequestDispatcher("LibraryController?command=WELCOME");
-			requestDispatcher.forward(request, response);
+			// RequestDispatcher requestDispatcher =
+			// request.getRequestDispatcher("LibraryController?command=WELCOME");
+			// requestDispatcher.forward(request, response);
+			response.sendRedirect(request.getContextPath() + "/LibraryController");
 
 		} else {
 			response.sendRedirect(request.getContextPath() + "/login.jsp?message=INVALID");

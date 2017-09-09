@@ -23,4 +23,6 @@ public interface LibraryBookDao {
 	 */
 	public List<Book> getBooks(Integer userId, String category) throws SQLException;
 
+	public Book getBook(Integer userId, String bookName) throws SQLException;
+
 }

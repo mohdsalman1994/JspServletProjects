@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<item value="true" key="ProjectSelectionDialog.show_all"/>
+	<item value="filter_imports;" key="filters_last_used"/>
 	<item value="false" key="delegateUpdating"/>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="false" key="renameSubpackages"/>
@@ -54,7 +55,7 @@
 	</section>
 	<section name="SourceActionDialog.constructors">
 		<item value="false" key="SynchronizedModifier"/>
-		<item value="false" key="Comments"/>
+		<item value="true" key="Comments"/>
 		<item value="1" key="VisibilityModifier"/>
 		<item value="false" key="FinalModifier"/>
 	</section>
@@ -120,8 +121,8 @@
 		<item value="2" key="pageIndex"/>
 	</section>
 	<section name="completion_proposal_size">
-		<item value="194" key="contextSelector.size.y"/>
-		<item value="284" key="contextSelector.size.x"/>
+		<item value="182" key="contextSelector.size.y"/>
+		<item value="272" key="contextSelector.size.x"/>
 	</section>
 	<section name="AddGetterSetterDialog">
 		<item value="false" key="SortOrdering"/>
