@@ -13,34 +13,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Servlet Filter implementation class SessionFilter
  */
-@WebFilter(urlPatterns = { "/homepage.jsp" })
+@WebFilter(urlPatterns = { "/homepage.jsp", "/LibraryController" })
 public class SessionFilter implements Filter {
 
-	/**
-	 * 
-	 */
-	public SessionFilter() {
-		System.out.println("Session filter started");
-	}
+	Log logger = LogFactory.getLog(SessionFilter.class);
 
 	/**
 	 * 
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
+		logger.debug("Session filter started");
 	}
 
 	/**
 	 * @param request
 	 * @param response
 	 * @param chain
+	 *            Only allow registered and logged in user's to access the given
+	 *            pages.
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-		System.out.println("Inside do filter");
+		logger.info("Inside dofilter()");
 
 		// downcast request and response
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
@@ -50,17 +51,17 @@ public class SessionFilter implements Filter {
 		// the user requests for the given pages.
 		// This is needed in case after logout, if the user
 		// presses back button after logout
-		System.out.println("Trying to resolve cache issue");
+		logger.info("Trying to resolve cache issue");
 		httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
 		httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 		httpServletResponse.setDateHeader("Expires", 0);
 
 		// check if user is logged in or
 		HttpSession httpSession = httpServletRequest.getSession();
-		System.out.println(httpSession);
-		System.out.println(httpSession.getAttribute("user"));
+		logger.info("HttpSession: " + httpSession);
+		logger.info("User: " + httpSession.getAttribute("user"));
 		if ((httpSession.getAttribute("user") == null)) {
-			System.out.println("Sorry you cannot access this webpage");
+			logger.info("Sorry you cannot access this webpage");
 			httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login.jsp?message=NOACCESS");
 		} else {
 
@@ -74,7 +75,7 @@ public class SessionFilter implements Filter {
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-		System.out.println("SessionFilter destroyed");
+		logger.info("SessionFilter destroyed");
 	}
 
 }

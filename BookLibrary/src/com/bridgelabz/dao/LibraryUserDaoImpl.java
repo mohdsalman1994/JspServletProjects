@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.bridgelabz.entity.LibraryUser;
 import com.bridgelabz.utilities.MyUtilitiy;
 
@@ -18,6 +21,8 @@ import com.bridgelabz.utilities.MyUtilitiy;
  *
  */
 public class LibraryUserDaoImpl implements LibraryUserDAO {
+
+	private Log logger = LogFactory.getLog(LibraryUserDaoImpl.class);
 
 	// can't use @Resource annotation since this is POJO class. It applies to Java
 	// EE elements only.
@@ -28,6 +33,9 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 	 *            used to obtain connection to the database
 	 */
 	public LibraryUserDaoImpl(DataSource dataSource) {
+
+		logger.debug("LibraryUserDaoImpl initialized");
+
 		this.dataSource = dataSource;
 	}
 
@@ -40,6 +48,8 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 	 */
 	@Override
 	public boolean authenticate(String email, String password) throws SQLException {
+
+		logger.info("Inside LibraryUserDaoImpl authenticate()");
 
 		// get a connection to database
 		try (Connection connection = dataSource.getConnection()) {
@@ -86,6 +96,9 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 	@Override
 	public String register(String fullName, String email, String mobile, String password, String confirmPassword,
 			String gender) throws SQLException {
+
+		logger.info("Inside LibraryUserDaoImpl register()");
+
 		String error = "";
 
 		// first check for null data or empty data and error messages accordingly
@@ -173,6 +186,8 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 
 		}
 
+		logger.info("Register Error String: " + error);
+
 		return error;
 	}
 
@@ -182,6 +197,8 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 	 */
 	@Override
 	public boolean checkUserExists(String email) throws SQLException {
+
+		logger.info("Inside LibraryUserDaoImpl checkUserExists()");
 
 		// get a connection to database
 		try (Connection connection = dataSource.getConnection()) {
@@ -216,6 +233,9 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 	@Override
 	public void addUser(String fullName, String email, String mobile, String password, String gender)
 			throws SQLException {
+
+		logger.info("Inside LibraryUserDaoImpl addUser()");
+
 		try (Connection connection = dataSource.getConnection()) {
 
 			String sql = "insert into appusers(email, password) values (?,?)";
@@ -258,7 +278,7 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 
 				preparedStatement.executeUpdate();
 			} else {
-				System.out.println("User does not exist");
+				logger.debug("User does not exist");
 			}
 
 		}
@@ -272,6 +292,8 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 	 */
 	@Override
 	public LibraryUser getUserByEmail(String email) throws SQLException {
+
+		logger.info("Inside LibraryUserDaoImpl getUserByEmail()");
 
 		LibraryUser libraryUser = null;
 
@@ -292,6 +314,7 @@ public class LibraryUserDaoImpl implements LibraryUserDAO {
 				String mobile = resultSet.getString("phone");
 				String gender = resultSet.getString("gender");
 				libraryUser = new LibraryUser(userId, fullName, email, mobile, gender);
+				logger.info("LibraryUser " + libraryUser);
 			}
 
 		}

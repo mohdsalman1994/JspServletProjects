@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.bridgelabz.dao.LibraryUserDaoImpl;
 import com.bridgelabz.entity.LibraryUser;
 
@@ -21,6 +24,7 @@ import com.bridgelabz.entity.LibraryUser;
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Log logger = LogFactory.getLog(LoginController.class);
 
 	// Our DAO reference
 	LibraryUserDaoImpl userDbUtil;
@@ -36,6 +40,8 @@ public class LoginController extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 
+		logger.debug("LoginController started");
+
 		// create our student db_util ... and pass in the connection pool/datasource
 		userDbUtil = new LibraryUserDaoImpl(dataSource);
 
@@ -49,6 +55,9 @@ public class LoginController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		logger.info("Inside LibraryController doGet()");
+
 		doPost(request, response);
 	}
 
@@ -60,6 +69,8 @@ public class LoginController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		logger.info("Inside LibraryController doGet()");
 
 		// get the email and password from the login page
 		String email = request.getParameter("email");

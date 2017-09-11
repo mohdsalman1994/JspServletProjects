@@ -9,12 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Servlet implementation class LogoutController
  */
 @WebServlet("/LogoutController")
 public class LogoutController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Log logger = LogFactory.getLog(LogoutController.class);
 
 	/**
 	 * @param request
@@ -24,6 +28,8 @@ public class LogoutController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		logger.info("Inside LogoutController doGet()");
 
 		// retrieve the session if it exists
 		HttpSession httpSession = request.getSession(false);

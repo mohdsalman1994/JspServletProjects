@@ -115,21 +115,21 @@
 								</button>
 								</div>
 								<div class="modal-body">
-									<form id="addForm" class="text-left">
+									<form id="addForm" class="text-left">										
 
 										<div class="form-group">
 											<label for="bookName">Book Name</label>
-											<input type="text" class="form-control" id="bookName" placeholder="Applied Physics">
+											<input type="text" class="form-control" id="bookName" name="bookName" placeholder="Applied Physics" required>
 										</div>
 
 										<div class="form-group">
 											<label for="bookAuthor">Book Author</label>
-											<input type="text" class="form-control" id="bookAuthor" placeholder="Robert Cornell">
+											<input type="text" class="form-control" id="bookAuthor" name="bookAuthor" placeholder="Robert Cornell" required>
 										</div>
 
 										<div class="form-group">
 											<label for="category">Category</label>
-											<select class="form-control" id="category">
+											<select class="custom-select" id="category" name="category">
 													<option>Arts</option>
 													<option>Science</option>
 													<option>Commerce</option>													
@@ -138,15 +138,17 @@
 
 										<div class="form-group">
 											<label for="bookDescription">Book Description</label>
-											<textarea class="form-control" id="bookDescription" rows="3"></textarea>
+											<textarea class="form-control" id="bookDescription" name="bookDescription" rows="3"></textarea>
 										</div>
+
+										<button type="submit" class="btn btn-primary" id="addButton">Submit</button>
 
 									</form>
 
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-									<button type="submit" class="btn btn-primary" form="addForm">Submit</button>
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>									
+									
 								</div>
 							</div>
 						</div>
@@ -171,72 +173,8 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
 		 crossorigin="anonymous"></script>
 
-		<script>
-			$('#viewBookModal').on('show.bs.modal', function (event) {
-				var button = $(event.relatedTarget) // Button that triggered the modal
-				var bookCategory = button.data('whatever'); // Extract info from data-* attributes
-				var modal = $(this);
-				modal.find('.modal-title').text('My ' + bookCategory + ' books');
-				console.log('Before ajax');
+		<script src="js/homepage.js">
 
-
-				// Using the core $.ajax() method
-				$.ajax({
-
-					// The URL for the request
-					url: "LibraryController",
-
-					// The data to send (will be converted to a query string)
-					data: {
-						category: bookCategory,
-						command: 'list'
-					},
-
-					// Whether this is a POST or GET request
-					type: "GET",
-
-					// The type of data we expect back
-					dataType: "json",
-				})
-					// Code to run if the request succeeds (is done);
-					// The response is passed to the function
-					.done(function (responseJson) {
-						console.log(responseJson);
-						if (responseJson != null) {
-							console.log("Inside done function" + responseJson);
-							$("#bookTable").html("");
-							var html = "";
-							html += "<tr><td>Book Name</td><td>Action</td></tr>";
-
-							$.each(responseJson, function (key, value) {
-
-								html += "<tr><td>" + value["bookName"] + "</td><td>"
-									+ "<button type='button' onClick=editBook class='btn btn-secondary'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button>  |   "
-									+ "<button type='button' class='btn btn-success'><i class='fa fa-trash-o' aria-hidden='true'></i></button ></td></tr>";
-
-							});
-
-							$("#bookTable").html(html);
-						}
-
-
-					})
-					// Code to run if the request fails; the raw request and
-					// status codes are passed to the function
-					.fail(function (xhr, status, errorThrown) {
-						$("#bookTable").html("");
-						alert("No books found!");
-						console.log("Error: " + errorThrown);
-						console.log("Status: " + status);
-						console.dir(xhr);
-					})
-				// Code to run regardless of success or failure;
-				// .always(function (xhr, status) {
-				// 	alert("The request is complete!");
-				// });
-
-				console.log('After ajax');
-			});
 		</script>
 
 

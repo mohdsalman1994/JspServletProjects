@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.bridgelabz.dao.LibraryUserDaoImpl;
 import com.bridgelabz.entity.LibraryUser;
 import com.bridgelabz.utilities.MyUtilitiy;
@@ -23,6 +26,7 @@ import com.bridgelabz.utilities.MyUtilitiy;
 @WebServlet("/RegisterController")
 public class RegisterController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Log logger = LogFactory.getLog(RegisterController.class);
 
 	// Our DAO reference
 	LibraryUserDaoImpl libraryUserDbUtil;
@@ -38,17 +42,25 @@ public class RegisterController extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 
+		logger.debug("RegisterController started");
+
 		// create our student db_util ... and pass in the connection pool/datasource
 		libraryUserDbUtil = new LibraryUserDaoImpl(dataSource);
 
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @param request
+	 * @param response
+	 *            This method tries to register a user if all the details are
+	 *            correct and logs him if correct. Else it redirects to the login
+	 *            page
+	 * 
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		logger.info("Inside RegisterController doPost()");
 
 		// get all the fields from the registration page
 		String fullName = request.getParameter("fullname");
@@ -58,7 +70,7 @@ public class RegisterController extends HttpServlet {
 		String confirmPassword = request.getParameter("confirmPassword");
 		String gender = request.getParameter("gender");
 
-		System.out.println("LibraryUser [fullName=" + fullName + ", email=" + email + ", mobile=" + mobile + ", gender="
+		logger.info("LibraryUser [fullName=" + fullName + ", email=" + email + ", mobile=" + mobile + ", gender="
 				+ gender + ", password=" + password + ", confirmPassword=" + confirmPassword + "]");
 
 		// pass them to the register method to handle registration
@@ -74,7 +86,7 @@ public class RegisterController extends HttpServlet {
 		// if no errors are found then forward to homepage
 		if (MyUtilitiy.isNullOrBlank(error)) {
 
-			System.out.println("No errors were found. Yay!");
+			logger.debug("No errors were found. Yay!");
 
 			// add the user to the database
 			try {

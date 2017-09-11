@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.bridgelabz.dao.LibraryBookDao;
 import com.bridgelabz.dao.LibraryBookDaoImpl;
 import com.bridgelabz.entity.Book;
@@ -30,6 +33,7 @@ import com.google.gson.reflect.TypeToken;
 @WebServlet("/LibraryController")
 public class LibraryController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Log logger = LogFactory.getLog(LibraryController.class);
 
 	// Our DAO reference
 	LibraryBookDao libraryBookUtil;
@@ -45,6 +49,8 @@ public class LibraryController extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 
+		logger.debug("LibraryController Started");
+
 		// create our student db_util ... and pass in the connection pool/datasource
 		libraryBookUtil = new LibraryBookDaoImpl(dataSource);
 
@@ -59,18 +65,21 @@ public class LibraryController extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @param request
+	 * @param response
+	 *            Our main controller which handles handles different requests and
+	 *            directs to appropriate library operations such as displaying
+	 *            homepage, adding/updating/viewing/deleting books.
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
 
-			System.out.println("Inside Library Controller");
+			logger.info("Inside LibraryController doPost()");
 
 			// read the command parameter
 			String command = request.getParameter("command");
-			System.out.println("Command is " + command);
+			logger.info("Command is " + command);
 
 			// if the command is missing, then default to list students
 			if (command == null) {
@@ -120,36 +129,58 @@ public class LibraryController extends HttpServlet {
 	/**
 	 * @param request
 	 * @param response
+	 * @throws IOException
+	 *             This method deletes the book sent by the request.
 	 */
-	private void deleteBook(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+	private void deleteBook(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		logger.info("Inside LibraryController deleteBook()");
+
+		Integer userId = getUserSessionId(request);
+		if (userId != null) {
+
+			String bookName = request.getParameter("bookName");
+
+			try {
+				libraryBookUtil.deleteBook(userId, bookName);
+				response.setContentType("text/plain");
+				response.getWriter().print("success");
+			} catch (SQLException e) {
+				response.setContentType("text/html");
+				response.getWriter().print("error");
+			}
+
+		}
 
 	}
 
 	/**
 	 * @param request
 	 * @param response
+	 * @throws IOException
+	 *             This method updates the book sent by the request.
 	 */
-	private void updateBook(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+	private void updateBook(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-	}
+		logger.info("Inside LibraryController updateBook()");
 
-	/**
-	 * @param request
-	 * @param response
-	 */
-	private void loadBook(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * @param request
-	 * @param response
-	 */
-	private void addBook(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+		Integer userId = getUserSessionId(request);
+		if (userId != null) {
+			String oldBookName = request.getParameter("oldBookName");
+			String bookName = request.getParameter("bookName");
+			String bookCategory = request.getParameter("category");
+			String bookDescription = request.getParameter("bookDescription");
+			String bookAuthor = request.getParameter("bookAuthor");
+			Book book = new Book(bookName, bookAuthor, bookCategory, bookDescription);
+			try {
+				libraryBookUtil.updateBook(userId, oldBookName, book);
+				response.setContentType("text/html");
+				response.getWriter().print("success");
+			} catch (SQLException e) {
+				response.setContentType("text/html");
+				response.getWriter().print("duplicate");
+			}
+		}
 
 	}
 
@@ -158,26 +189,80 @@ public class LibraryController extends HttpServlet {
 	 * @param response
 	 * @throws SQLException
 	 * @throws IOException
+	 *             This method sends the book required by the requestURL.
+	 */
+	private void loadBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+
+		logger.info("Inside LibraryController loadBook()");
+
+		Integer userId = getUserSessionId(request);
+		if (userId != null) {
+
+			String bookName = request.getParameter("bookName");
+			Book book = libraryBookUtil.getBook(userId, bookName);
+			Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+			String jsonObject = gson.toJson(book);
+			response.setContentType("application/json");
+			response.getWriter().print(jsonObject);
+		}
+
+	}
+
+	/**
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 * @throws SQLException
+	 *             This method adds the book sent by the request.
+	 */
+	private void addBook(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+
+		logger.info("Inside LibraryController addBook()");
+
+		Integer userId = getUserSessionId(request);
+		if (userId != null) {
+			String bookName = request.getParameter("bookName");
+			String bookCategory = request.getParameter("category");
+			String bookDescription = request.getParameter("bookDescription");
+			String bookAuthor = request.getParameter("bookAuthor");
+
+			if (libraryBookUtil.checkIfBookExists(userId, bookName) == false) {
+
+				Book book = new Book(bookName, bookAuthor, bookCategory, bookDescription);
+				logger.debug("Book details: " + book);
+				libraryBookUtil.addBook(userId, book);
+				response.setContentType("text/plain");
+				response.getWriter().print("success");
+			} else {
+				response.setContentType("text/plain");
+				response.getWriter().print("duplicate");
+
+			}
+		}
+	}
+
+	/**
+	 * @param request
+	 * @param response
+	 * @throws SQLException
+	 * @throws IOException
+	 *             This method returns a list of books for the given user in
+	 *             response.
 	 */
 	private void listBooks(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 
-		System.out.println("Inside listBooks");
+		logger.info("Inside LibraryController listBooks");
 		Gson gson = null;
 		String category = request.getParameter("category").toLowerCase();
-		HttpSession httpSession = request.getSession();
-
-		Integer userId = null;
-
-		if (httpSession != null) {
-			LibraryUser user = (LibraryUser) httpSession.getAttribute("user");
-			userId = user.getUserId();
+		Integer userId = getUserSessionId(request);
+		if (userId != null) {
 			List<Book> bookList = libraryBookUtil.getBooks(userId, category);
 			if (bookList != null) {
 				gson = new GsonBuilder().disableHtmlEscaping().create();
 				JsonElement element = gson.toJsonTree(bookList, new TypeToken<List<Book>>() {
 				}.getType());
 				JsonArray jsonArray = element.getAsJsonArray();
-				System.out.println("JsonArray: " + jsonArray);
+				logger.info("JsonArray: " + jsonArray);
 				response.setContentType("application/json");
 				response.getWriter().print(jsonArray);
 			}
@@ -190,12 +275,37 @@ public class LibraryController extends HttpServlet {
 	 * @param response
 	 * @throws IOException
 	 * @throws ServletException
+	 *             This method forwards the request to the homepage view.
 	 */
 	private void displayHomePage(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		logger.info("Inside LibraryController dusplayHomePage()");
+
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("homepage.jsp");
 		requestDispatcher.forward(request, response);
 
 	}
 
+	/**
+	 * @param request
+	 * @return the userId associated with the current session.
+	 */
+	public Integer getUserSessionId(HttpServletRequest request) {
+
+		logger.info("Inside LibraryController getUserSessionId()");
+
+		HttpSession httpSession = request.getSession();
+
+		Integer userId = null;
+
+		if (httpSession != null) {
+			LibraryUser user = (LibraryUser) httpSession.getAttribute("user");
+			userId = user.getUserId();
+			return userId;
+		}
+
+		return userId;
+
+	}
 }

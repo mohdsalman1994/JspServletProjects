@@ -30,8 +30,10 @@ public interface LibraryUserDAO {
 	 * @param password
 	 * @param confirmPassword
 	 * @param gender
-	 * @return This method tries to register a new user with the given parameters
+	 * @return errorString
 	 * @throws SQLException
+	 *             This method tries to register a new user with the given
+	 *             parameters
 	 */
 	public String register(String fullName, String email, String mobile, String password, String confirmPassword,
 			String gender) throws SQLException;
@@ -55,6 +57,13 @@ public interface LibraryUserDAO {
 	public void addUser(String fullName, String email, String mobile, String password, String gender)
 			throws SQLException;
 
+	/**
+	 * @param email
+	 * @return
+	 * @throws SQLException
+	 * Returns the User with the given email.
+	 * 
+	 */
 	public LibraryUser getUserByEmail(String email) throws SQLException;
 
 }
