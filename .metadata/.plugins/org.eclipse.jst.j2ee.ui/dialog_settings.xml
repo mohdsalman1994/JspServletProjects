@@ -6,6 +6,7 @@
 		<item value="Apache Tomcat v8.0"/>
 	</list>
 	<list key="J2EE_EXPORT_JST_WEB">
+		<item value="/media/bridgeit/9F80-14E8/BookLibrary.war"/>
 		<item value="/media/bridgeit/9F80-14E8/WorkProjects/web-student-tracker.war"/>
 		<item value="/media/bridgeit/9F80-14E8/WorkProjects/BookLibrary.war"/>
 		<item value="/home/bridgeit/SALMAN/TEMP/SessionExamples.war"/>
