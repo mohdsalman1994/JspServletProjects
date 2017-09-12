@@ -80,15 +80,45 @@
 						<div class="modal-header">
 							<h5 class="modal-title" id="viewBookModalLabel"></h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+							<span aria-hidden="true">&times;</span>
+						</button>
 						</div>
-						<div class="modal-body">
+						<div class="modal-body" id="viewModalBody">
 							<table id="bookTable" class="table"></table>
+							<form id="updateForm" class="text-left">
+							
+							   <input type="hidden" id="oldBookName" name="oldBookName" value="">
+							
+
+								<div class="form-group">
+									<label for="uBookName">Book Name</label> <input type="text" class="form-control" id="uBookName" name="uBookName" placeholder="Applied Physics"
+									 required>
+								</div>
+
+								<div class="form-group">
+									<label for="uBookAuthor">Book Author</label> <input type="text" class="form-control" id="uBookAuthor" name="uBookAuthor"
+									 placeholder="Robert Cornell" required>
+								</div>
+
+								<div class="form-group">
+									<label for="uCategory">Category</label> <select class="custom-select" id="uCategory" name="uCategory">
+																		<option>Arts</option>
+																		<option>Science</option>
+																		<option>Commerce</option>
+																	</select>
+								</div>
+
+								<div class="form-group">
+									<label for="uBookDescription">Book Description</label>
+									<textarea class="form-control" id="uBookDescription" name="uBookDescription" rows="3"></textarea>
+								</div>
+
+							</form>
 							<!-- <div id="myDiv"></div> -->
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						    <button type="submit" class="btn btn-primary" id="updateButton" form="updateForm">Update</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>							
 						</div>
 					</div>
 				</div>
@@ -115,25 +145,24 @@
 								</button>
 								</div>
 								<div class="modal-body">
-									<form id="addForm" class="text-left">										
+									<form id="addForm" class="text-left">
 
 										<div class="form-group">
-											<label for="bookName">Book Name</label>
-											<input type="text" class="form-control" id="bookName" name="bookName" placeholder="Applied Physics" required>
+											<label for="bookName">Book Name</label> <input type="text" class="form-control" id="bookName" name="bookName"
+											 placeholder="Applied Physics" required>
 										</div>
 
 										<div class="form-group">
-											<label for="bookAuthor">Book Author</label>
-											<input type="text" class="form-control" id="bookAuthor" name="bookAuthor" placeholder="Robert Cornell" required>
+											<label for="bookAuthor">Book Author</label> <input type="text" class="form-control" id="bookAuthor" name="bookAuthor"
+											 placeholder="Robert Cornell" required>
 										</div>
 
 										<div class="form-group">
-											<label for="category">Category</label>
-											<select class="custom-select" id="category" name="category">
-													<option>Arts</option>
-													<option>Science</option>
-													<option>Commerce</option>													
-												  </select>
+											<label for="category">Category</label> <select class="custom-select" id="category" name="category">
+											<option>Arts</option>
+											<option>Science</option>
+											<option>Commerce</option>
+										</select>
 										</div>
 
 										<div class="form-group">
@@ -141,14 +170,13 @@
 											<textarea class="form-control" id="bookDescription" name="bookDescription" rows="3"></textarea>
 										</div>
 
-										<button type="submit" class="btn btn-primary" id="addButton">Submit</button>
-
 									</form>
 
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>									
-									
+									<button type="submit" class="btn btn-primary" id="addButton" form="addForm">Submit</button>
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
 								</div>
 							</div>
 						</div>
