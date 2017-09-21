@@ -51,10 +51,13 @@ public class SessionFilter implements Filter {
 		// the user requests for the given pages.
 		// This is needed in case after logout, if the user
 		// presses back button after logout
-		logger.info("Trying to resolve cache issue");
-		httpServletResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-		httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-		httpServletResponse.setDateHeader("Expires", 0);
+		/*
+		 * logger.info("Trying to resolve cache issue");
+		 * httpServletResponse.setHeader("Cache-Control",
+		 * "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+		 * httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+		 * httpServletResponse.setDateHeader("Expires", 0);
+		 */
 
 		// check if user is logged in or
 		HttpSession httpSession = httpServletRequest.getSession();

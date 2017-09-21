@@ -114,7 +114,7 @@
 
 					<div class="form-group">
 						<p id="signin" class="text-center">
-							Already have an Account?<a href="#">Sign In</a>.
+							Already have an Account?<a href="login.jsp">Sign In</a>.
 						</p>
 					</div>
 				</form>
